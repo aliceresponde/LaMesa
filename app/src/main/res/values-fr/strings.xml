@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Guide de LA Mesa</string>
+    <string name="action_settings">Temps</string>
+    <string name="title_activity_opciones">Les options</string>
+    <string name="nombre_label">Le nom</string>
+</resources>

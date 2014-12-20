@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Guia La Mesa</string>
+    <string name="action_settings">Clima</string>
+    <string name="title_activity_opciones">Opciones</string>
+    <string name="nombre_label">Nombre</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="btn_resgistrar">Registrar Lugar</string>
+    <string name="btn_buscar">Buscar Lugares</string>
+
+</resources>
