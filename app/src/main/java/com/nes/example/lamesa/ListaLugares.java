@@ -1,16 +1,18 @@
 package com.nes.example.lamesa;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.nes.example.android.LaMesaActivity;
+
 import java.util.ArrayList;
 
-public class ListaLugares extends Activity {
+public class ListaLugares extends LaMesaActivity {
 
+    private String TAG=this.getClass().getName();
     private ListView listaLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,9 +1,7 @@
 package com.nes.example.lamesa;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,8 +11,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nes.example.android.LaMesaActivity;
 
-public class Entrar extends Activity {
+
+public class Entrar extends LaMesaActivity {
 
     private RelativeLayout contenedor;
     private EditText contrasena;
@@ -22,16 +22,15 @@ public class Entrar extends Activity {
     private TextView nombreLabel;
     private TextView contrasenaLabel;
     private Button btnIngresar;
+    private String TAG=this.getClass().getName();
 
-    public String TAG="ENTRADA";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entrar_activity);
-
-        Log.v(TAG, "ON CREATE");
-
+        setParse();
         contenedor= (RelativeLayout) findViewById(R.id.contenedor);
         contrasenaLabel= (TextView) findViewById(R.id.textViewContrasena);
         nombreLabel= (TextView) findViewById(R.id.textViewNombre);
@@ -53,6 +52,9 @@ public class Entrar extends Activity {
             }
         });
 
+       /* ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();*/
     }
 
 
@@ -76,35 +78,5 @@ public class Entrar extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.v(TAG, "ON RESUME");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.v(TAG, "ON START");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.v(TAG, "ON PAUSE");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.v(TAG, "ON STOP");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.v(TAG, "ON DESTROY");
     }
 }

@@ -7,12 +7,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.nes.example.android.LaMesaActivity;
 
-public class Opciones extends Entrar {
 
+public class Opciones extends LaMesaActivity {
+
+    private String TAG=this.getClass().getName();
     private Button btnRegistrar;
     private Button btnBuscar;
-    public String TAG="OPCIONES";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
