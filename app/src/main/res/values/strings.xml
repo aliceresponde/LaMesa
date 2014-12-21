@@ -11,7 +11,7 @@
     <string name="btn_buscar">Buscar Lugares</string>
     <string name="title_activity_registro_lugar">RegistroLugar</string>
 
-    <!--Registro Lugar-->
+    <!-- Registro Lugar -->
     <string name="lugar_nombre">Nombre</string>
     <string name="lugar_dir">Dirección</string>
     <string name="lugar_lon">Longitud</string>
@@ -20,5 +20,8 @@
     <string name="registrar_title">Registro de Lugar Turístico</string>
     <string name="label_nombre">label_nombre</string>
     <string name="label_direccion">label_direccion</string>
+    <string name="btn_check_place_map">Ver ubicacion</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="btn_confirmar">Confirmar Ubicación</string>
 
 </resources>

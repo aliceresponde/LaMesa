@@ -1,17 +1,18 @@
 package com.nes.example.lamesa;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.nes.example.android.LaMesaActivity;
 import com.nes.example.parser.LugarPost;
 import com.parse.ParseACL;
@@ -30,6 +31,8 @@ public class RegistroLugar extends LaMesaActivity implements LocationListener  {
     private EditText inputLatitud;
     private EditText inputLongitud;
     private Button btnRegistrar;
+    private Button btnVerificarLugar;
+    private static int REQUEST_CODE_MAP_ACTIVITY=16843564;
 
     // Reference to the LocationManager and LocationListener
     private LocationManager mLocationManager;
@@ -43,18 +46,26 @@ public class RegistroLugar extends LaMesaActivity implements LocationListener  {
     private long mMinTime = 5000;
     // default minimum distance between old and new readings mts.
     private float mMinDistance = 10.0f;
-
+    private static LatLng locationFromMap;
+    private static boolean errorLocationFromMap=false;
 
     @Override
     protected void onResume() {
         super.onResume();
+
         // Get best last location measurement
-        mBestReading = bestLastKnownLocation(MIN_LAST_READ_ACCURACY, ONE_HOUR);
-        if (mBestReading!=null) {
-            inputLatitud.setText(mBestReading.getLatitude()+"");
-            inputLongitud.setText(mBestReading.getLongitude()+"");
+        if(errorLocationFromMap) {
+            mBestReading = bestLastKnownLocation(MIN_LAST_READ_ACCURACY, ONE_HOUR);
         }
-        // Register for network location updates
+        if (mBestReading!=null) {
+            setLatitudLongitudLugar(mBestReading.getLatitude()+"",mBestReading.getLongitude()+"");
+        }
+        if(errorLocationFromMap) {
+            setListenerLocation();
+        }
+    }
+
+    public void setListenerLocation(){
         if (bestProvider!=null && mLocationManager.getProvider(bestProvider)!=null) {
             mLocationManager.requestLocationUpdates(
                     bestProvider, mMinTime,
@@ -62,10 +73,9 @@ public class RegistroLugar extends LaMesaActivity implements LocationListener  {
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mLocationManager.removeUpdates(this);
+    public void setLatitudLongitudLugar(String lat, String lon){
+        inputLatitud.setText("Latitud:"+ lat);
+        inputLongitud.setText("Longitud"+lon);
     }
 
     @Override
@@ -74,6 +84,7 @@ public class RegistroLugar extends LaMesaActivity implements LocationListener  {
         setContentView(R.layout.activity_registro_lugar);
 
         btnRegistrar=(Button) findViewById(R.id.btn_registrar_action);
+        btnVerificarLugar=(Button) findViewById(R.id.btn_check_place_map);
         inputNombre=(EditText) findViewById(R.id.editTexNombre);
         inputDireccion=(EditText) findViewById(R.id.editTextDir);
         inputLatitud=(EditText) findViewById(R.id.editTextLat);
@@ -104,6 +115,7 @@ public class RegistroLugar extends LaMesaActivity implements LocationListener  {
                                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                             }else{
                                 Toast.makeText(getApplicationContext(), "Guardado exitosamente!", Toast.LENGTH_SHORT).show();
+                                setListenerLocation();
                             }
                         }
                     });
@@ -113,11 +125,28 @@ public class RegistroLugar extends LaMesaActivity implements LocationListener  {
             }
         });
 
+        btnVerificarLugar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivityForResult(intent, REQUEST_CODE_MAP_ACTIVITY);
+                }catch (Exception e){
+                    errorLocationFromMap=true;
+                    recreate();
+                }
+            }
+        });
         // Acquire reference to the LocationManager
         if (null == (mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE)))
             finish();
     }
 
+    @Override
+    protected void onPause() {
+        mLocationManager.removeUpdates(this);
+        super.onStop();
+    }
     // Get the last known location from all providers
     // return best reading that is as accurate as minAccuracy and
     // was taken no longer then minAge milliseconds ago. If none,
@@ -152,27 +181,15 @@ public class RegistroLugar extends LaMesaActivity implements LocationListener  {
         }
     }
 
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_registro_lugar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode==REQUEST_CODE_MAP_ACTIVITY && resultCode== Activity.RESULT_OK){
+            Bundle bundle=data.getExtras();
+            locationFromMap=(LatLng)bundle.getParcelable(MapActivity.KEY_MAP_BUNDLE);
+            if (locationFromMap!=null){
+                setLatitudLongitudLugar(locationFromMap.latitude+"",locationFromMap.longitude+"");
+            }
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -184,8 +201,7 @@ public class RegistroLugar extends LaMesaActivity implements LocationListener  {
             mBestReading=currentLocation;
         }
         if (mBestReading!=null) {
-            inputLatitud.setText(mBestReading.getLatitude()+"");
-            inputLongitud.setText(mBestReading.getLongitude()+"");
+            setLatitudLongitudLugar(mBestReading.getLatitude()+"",mBestReading.getLongitude()+"");
         }
     }
 

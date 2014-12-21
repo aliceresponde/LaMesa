@@ -68,6 +68,7 @@
         android:layout_height="0dp"
         android:layout_weight="0.2"
         android:gravity="center"
+        android:orientation="vertical"
         >
 
         <Button
@@ -75,6 +76,12 @@
             android:layout_height="wrap_content"
             android:text="@string/btn_registrar_action"
             android:id="@+id/btn_registrar_action" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_check_place_map"
+            android:id="@+id/btn_check_place_map" />
 
     </LinearLayout>
 
