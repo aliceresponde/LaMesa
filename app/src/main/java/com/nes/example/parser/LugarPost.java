@@ -24,11 +24,11 @@ public class LugarPost extends ParseObject {
     }
 
     public String getDir() {
-        return getString(ContratoBD.lugarColNombre);
+        return getString(ContratoBD.lugarColDireccion);
     }
 
     public void setDir(String dir) {
-        put(ContratoBD.lugarColNombre, dir);
+        put(ContratoBD.lugarColDireccion, dir);
     }
 
     public ParseUser getUser() {
