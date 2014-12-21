@@ -14,10 +14,10 @@ public class ContratoBD {
     public final static String usuarioColCheckMail="emailVerified";
 
     //Tabla Lugares
-    public final static String tablaLugar="User";
+    public final static String tablaLugar="Lugar";
     public final static String lugarColNombre="nombre";
     public final static String lugarColDireccion="direccion";
-    public final static String lugarColLatitud="latitud";
-    public final static String lugarColLongitud="longitud";
+    public final static String lugarColGeopoint="location";
+    public final static String lugarRelUserId="userId";
 
 }

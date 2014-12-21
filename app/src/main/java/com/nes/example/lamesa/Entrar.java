@@ -9,8 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nes.example.android.LaMesaActivity;
+import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 
 public class Entrar extends LaMesaActivity {
@@ -22,8 +26,6 @@ public class Entrar extends LaMesaActivity {
     private TextView contrasenaLabel;
     private Button btnIngresar;
     private String TAG=this.getClass().getName();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +41,19 @@ public class Entrar extends LaMesaActivity {
         btnIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* if (nombre.getText().toString().equals("pepito") &&
-                        contrasena.getText().toString().equals("pepito")){*/
-                    Intent intent = new Intent(getApplicationContext(), Opciones.class);
-                    startActivity(intent);
-
-                /*}else{
-                    Toast.makeText(getApplicationContext(),"Credenciales inválidas",Toast.LENGTH_SHORT).show();
-                }*/
+                Toast.makeText(getApplicationContext(), "Conectando",Toast.LENGTH_SHORT).show();
+                ParseUser.logInInBackground(nombre.getText().toString(), contrasena.getText()
+                        .toString(), new LogInCallback() {
+                    @Override
+                    public void done(ParseUser user, ParseException e) {
+                       if (e!=null){
+                           Toast.makeText(getApplicationContext(), e.getMessage(),Toast.LENGTH_LONG).show();
+                       }else{
+                           Intent intent = new Intent(getApplicationContext(), Opciones.class);
+                           startActivity(intent);
+                       }
+                    }
+                });
             }
         });
     }

@@ -18,5 +18,7 @@
     <string name="lugar_lat">Latitud</string>
     <string name="btn_registrar_action">Registrar</string>
     <string name="registrar_title">Registro de Lugar Turístico</string>
+    <string name="label_nombre">label_nombre</string>
+    <string name="label_direccion">label_direccion</string>
 
 </resources>

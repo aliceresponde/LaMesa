@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.nes.example.parser.LugarPost;
 import com.parse.Parse;
+import com.parse.ParseObject;
 
 /**
  * Created by n.diazgranados on 20/12/2014.
@@ -24,6 +26,7 @@ public class LaMesaActivity extends Activity {
 
     public void setParse(){
         if (!habilitarParse) {
+            ParseObject.registerSubclass(LugarPost.class);
             Parse.enableLocalDatastore(this);
             Parse.initialize(this, "L00Wa4XTNKc9UbDSsiXwNdfZVldhoXKDxjc1PFPT", "W3APJFSjRX6US0bvLzyoqwn4fvifileFXOtPsvwb");
             habilitarParse=true;

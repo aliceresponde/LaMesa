@@ -12,9 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.nes.example.android.ContratoBD;
 import com.nes.example.android.LaMesaActivity;
-import com.parse.ParseObject;
+import com.nes.example.parser.LugarPost;
+import com.parse.ParseACL;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -30,10 +34,10 @@ public class RegistroLugar extends LaMesaActivity implements LocationListener  {
     // Reference to the LocationManager and LocationListener
     private LocationManager mLocationManager;
     private LocationListener mLocationListener;
-    private Location mBestReading;
+    private static Location mBestReading;
     private static final float MIN_LAST_READ_ACCURACY = 500.0f;
     private static final long ONE_MIN = 1000 * 60;
-    private static final long ONE_HOUR = ONE_MIN * 60;
+    private static final long ONE_HOUR = ONE_MIN * 5;
     private String bestProvider;
     // default minimum time between new readings ms
     private long mMinTime = 5000;
@@ -59,6 +63,12 @@ public class RegistroLugar extends LaMesaActivity implements LocationListener  {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        mLocationManager.removeUpdates(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_lugar);
@@ -73,13 +83,30 @@ public class RegistroLugar extends LaMesaActivity implements LocationListener  {
             @Override
             public void onClick(View v) {
                 if (mBestReading!=null) {
-                    ParseObject testObject = new ParseObject(ContratoBD.tablaLugar);
-                    testObject.put(ContratoBD.lugarColNombre, inputNombre.getText().toString());
-                    testObject.put(ContratoBD.lugarColDireccion, inputDireccion.getText().toString());
-                    testObject.put(ContratoBD.lugarColLatitud,inputLatitud.getText().toString());
-                    testObject.put(ContratoBD.lugarColLongitud, inputLongitud.getText().toString());
+                    //1
+                    LugarPost lugar = new LugarPost();
+                    lugar.setNombre(inputNombre.getText().toString());
+                    lugar.setDir(inputDireccion.getText().toString());
+                    ParseGeoPoint geopoint=new ParseGeoPoint(mBestReading.getLatitude(), mBestReading.getLongitude());
+                    lugar.setLocation(geopoint);
+                    lugar.setUser(ParseUser.getCurrentUser());
 
-                    testObject.saveInBackground();
+                    // 2
+                    ParseACL acl = new ParseACL();
+                    acl.setPublicReadAccess(true);
+                    lugar.setACL(acl);
+
+                    // 3
+                    lugar.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e!=null){
+                                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Guardado exitosamente!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 }else{
                     Toast.makeText(getApplicationContext(),"¿No se encuentra su ubicación.. tiene internet?", Toast.LENGTH_SHORT).show();
                 }
@@ -118,7 +145,7 @@ public class RegistroLugar extends LaMesaActivity implements LocationListener  {
 
         // Return best reading or null
         if (bestAccuracy > minAccuracy
-                /*|| (System.currentTimeMillis() - bestAge) > maxAge*/) {
+                || (System.currentTimeMillis() - bestAge) > maxAge) {
             return null;
         } else {
             return bestResult;
