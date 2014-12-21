@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nes.example.lamesa" >
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <meta-data android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <activity
             android:name="com.nes.example.lamesa.Entrar"
             android:label="@string/app_name" >
@@ -27,8 +32,16 @@
                 android:value="com.nes.example.lamesa.Entrar" />
         </activity>
         <activity
-            android:name=".ListaLugares"
+            android:name="com.nes.example.lamesa.ListaLugares"
             android:label="@string/title_activity_main" >
+        </activity>
+        <activity
+            android:name="com.nes.example.lamesa.RegistroLugar"
+            android:label="@string/title_activity_registro_lugar"
+            android:parentActivityName="com.nes.example.lamesa.Opciones" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.nes.example.lamesa.Opciones" />
         </activity>
     </application>
 

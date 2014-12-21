@@ -9,5 +9,14 @@
     <string name="hello_world">Hello world!</string>
     <string name="btn_resgistrar">Registrar Lugar</string>
     <string name="btn_buscar">Buscar Lugares</string>
+    <string name="title_activity_registro_lugar">RegistroLugar</string>
+
+    <!--Registro Lugar-->
+    <string name="lugar_nombre">Nombre</string>
+    <string name="lugar_dir">Dirección</string>
+    <string name="lugar_lon">Longitud</string>
+    <string name="lugar_lat">Latitud</string>
+    <string name="btn_registrar_action">Registrar</string>
+    <string name="registrar_title">Registro de Lugar Turístico</string>
 
 </resources>

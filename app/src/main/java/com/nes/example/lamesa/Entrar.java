@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nes.example.android.LaMesaActivity;
 
@@ -30,7 +29,6 @@ public class Entrar extends LaMesaActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entrar_activity);
-        setParse();
         contenedor= (RelativeLayout) findViewById(R.id.contenedor);
         contrasenaLabel= (TextView) findViewById(R.id.textViewContrasena);
         nombreLabel= (TextView) findViewById(R.id.textViewNombre);
@@ -41,20 +39,16 @@ public class Entrar extends LaMesaActivity {
         btnIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (nombre.getText().toString().equals("pepito") &&
-                        contrasena.getText().toString().equals("pepito")){
+               /* if (nombre.getText().toString().equals("pepito") &&
+                        contrasena.getText().toString().equals("pepito")){*/
                     Intent intent = new Intent(getApplicationContext(), Opciones.class);
                     startActivity(intent);
 
-                }else{
+                /*}else{
                     Toast.makeText(getApplicationContext(),"Credenciales inválidas",Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
-
-       /* ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();*/
     }
 
 

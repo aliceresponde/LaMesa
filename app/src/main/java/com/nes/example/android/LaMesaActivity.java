@@ -19,13 +19,14 @@ public class LaMesaActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v(TAG, "ON CREATE");
+        setParse();
     }
 
     public void setParse(){
         if (!habilitarParse) {
             Parse.enableLocalDatastore(this);
             Parse.initialize(this, "L00Wa4XTNKc9UbDSsiXwNdfZVldhoXKDxjc1PFPT", "W3APJFSjRX6US0bvLzyoqwn4fvifileFXOtPsvwb");
-            habilitarParse=!habilitarParse;
+            habilitarParse=true;
         }
     }
 

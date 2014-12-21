@@ -22,6 +22,14 @@ public class Opciones extends LaMesaActivity {
         setContentView(R.layout.opcion_activity);
         btnRegistrar = (Button) findViewById(R.id.btn_resgistrar);
         btnBuscar = (Button) findViewById(R.id.btn_buscar);
+
+        btnRegistrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent= new Intent(getApplicationContext(), RegistroLugar.class);
+                startActivity(intent);
+            }
+        });
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
