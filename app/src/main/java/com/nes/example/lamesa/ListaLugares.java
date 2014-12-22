@@ -1,13 +1,14 @@
 package com.nes.example.lamesa;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nes.example.android.ContratoBD;
 import com.nes.example.android.LaMesaActivity;
@@ -28,10 +29,6 @@ public class ListaLugares extends LaMesaActivity{
         setContentView(R.layout.lista_lugares);
 
         listaLayout = (ListView) findViewById(R.id.listaUbicaciones);
-
-        /*adaptador = new ArrayAdapter<String>(getApplicationContext(),
-                android.R.layout.simple_list_item_1, listaDatos);*/
-
         ParseQueryAdapter.QueryFactory<ParseObject> factory =
                 new ParseQueryAdapter.QueryFactory<ParseObject>() {
                     public ParseQuery create() {
@@ -42,34 +39,11 @@ public class ListaLugares extends LaMesaActivity{
         adaptador =new CustomAdapter(this,factory);
         adaptador.setTextKey(ContratoBD.lugarColNombre);
 
-
+        listaLayout.setOnItemClickListener(adaptador);
         listaLayout.setAdapter(adaptador);
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private class CustomAdapter extends ParseQueryAdapter<ParseObject> {
+    private class CustomAdapter extends ParseQueryAdapter<ParseObject> implements AdapterView.OnItemClickListener{
 
         private Context context;
 
@@ -98,6 +72,19 @@ public class ListaLugares extends LaMesaActivity{
             //imageView.loadInBackground();
 
             return v;
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            LugarPost lugar=(LugarPost) adaptador.getItem(position);
+            Toast.makeText(getApplicationContext(), "Click en Lugar", Toast.LENGTH_SHORT).show();
+            if (lugar!=null){
+                Intent intent=new Intent(getApplicationContext(),MapActivity.class);
+                Bundle bundle= new Bundle();
+                bundle.putString(MapActivity.KEY_MAP_BUNDLE,lugar.getLocation().getLatitude()+","+lugar.getLocation().getLongitude());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
         }
     }
 }

@@ -9,7 +9,6 @@ public class ContratoBD {
     public final static String tablaUsuario="User";
     public final static String usuarioColNombre="username";
     public final static String usuarioColContrasena="password";
-    public final static String usuarioColEstado="estado";
     public final static String usuarioColEmail="email";
     public final static String usuarioColCheckMail="emailVerified";
 

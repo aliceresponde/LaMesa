@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.FragmentActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -26,24 +24,41 @@ public class MapActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
         // Getting reference to SupportMapFragment
         SupportMapFragment fragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
         btnConfirmar=(Button) findViewById(R.id.btn_confirmar);
+        // Creating GoogleMap from SupportMapFragment
+        mGoogleMap = fragment.getMap();
+        // Enabling MyLocation button for the Google Map
+        mGoogleMap.setMyLocationEnabled(true);
+
+        Intent intent=getIntent();
+        if (intent!=null && intent.getExtras()!=null && intent.getExtras().getString(KEY_MAP_BUNDLE)!=null){
+            btnConfirmar.setVisibility(View.GONE);
+            verLugar(intent.getStringExtra(KEY_MAP_BUNDLE));
+        }else{
+            seleccionarLugar();
+        }
+
+    }
+
+    public void verLugar(String latLong){
+        String[] values= latLong.split(",");
+
+        LatLng location=new LatLng(Double.valueOf(values[0]),Double.valueOf(values[1]));
+        addMarker(location);
+    }
+
+    public void seleccionarLugar(){
+
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendToServer(location);
+                retornarMarcador(location);
             }
         });
-
-        // Creating GoogleMap from SupportMapFragment
-        mGoogleMap = fragment.getMap();
-
-        // Enabling MyLocation button for the Google Map
-        mGoogleMap.setMyLocationEnabled(true);
 
         // Setting OnClickEvent listener for the GoogleMap
         mGoogleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -65,7 +80,7 @@ public class MapActivity extends FragmentActivity {
     }
 
     // Invoking background thread to store the touched location in Remove MySQL server
-    private void sendToServer(LatLng latlng) {
+    private void retornarMarcador(LatLng latlng) {
         Intent returnIntent = new Intent();
         Bundle bundle= new Bundle();
         bundle.putParcelable(KEY_MAP_BUNDLE, (Parcelable)latlng);
@@ -74,25 +89,4 @@ public class MapActivity extends FragmentActivity {
         finish();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_map, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

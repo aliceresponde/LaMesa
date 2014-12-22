@@ -20,7 +20,7 @@
     <string name="registrar_title">Registro de Lugar Turístico</string>
     <string name="label_nombre">label_nombre</string>
     <string name="label_direccion">label_direccion</string>
-    <string name="btn_check_place_map">Ver ubicacion</string>
+    <string name="btn_check_place_map">Seleccionar ubicación (Mapa)</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="btn_confirmar">Confirmar Ubicación</string>
 
